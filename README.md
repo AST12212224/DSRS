@@ -256,7 +256,7 @@ $$
 \prod_{n=1}^{l}\frac{
 \left\lceil \frac{n-1}{5} \right\rceil + \left\lceil \frac{n}{5} \right\rceil
 }{
-\left\lceil \frac{n}{5} \right\rceil + \left\lceil \frac{n-1}{5} \right\rceil - \left\lceil \frac{n-2}{5} \right\rceil + 2 \left\lceil \frac{n-3}{5} \right\rceil - \left\lfloor \frac{n-4}{5} \right\rfloor
+\left\lceil \frac{n}{5} \right\rceil + \left\lceil \frac{n-1}{5} \right\rceil - \left\lceil \frac{n-2}{5} \right\rceil + 2 \left\lceil \frac{n-3}{5} \right\rceil - \left\lceil \frac{n-4}{5} \right\rceil
 }
 $$
 
