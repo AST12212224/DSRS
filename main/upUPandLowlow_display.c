@@ -42,10 +42,12 @@ int main() {
 
     // --------------------
     // Row 1: n square
-    fprintf(fp, "n square,");
-    for (int i = 0; i < l; i++) {
-        fprintf(fp, "%d", squares[i]);
-        if (i != l - 1) fprintf(fp, ",");
+     fprintf(fp, "n square,");
+    for (int i = 0; i < l * 2 - 1; i++) {
+        if (i % 2 == 0 && (i / 2) < l) {
+            fprintf(fp, "%d", squares[i / 2]);
+        }
+        if (i != l * 2 - 2) fprintf(fp, ",");
     }
     fprintf(fp, "\n");
 
