@@ -44,7 +44,7 @@ int main() {
         if (final_product > 3.0 && final_product < 3.2)
             fprintf(fp_pi, "%d,%.15f\n", mu, final_product);
         else
-            fprintf(fp_1, "%d,%.15f\n", mu, final_product);
+            fprintf(fp_1, "%d,%.15f\n", mu, final_product/4);
     }
 
     fclose(fp_pi);
