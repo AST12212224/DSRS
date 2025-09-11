@@ -1,5 +1,7 @@
 # Discrete Square Residual Structure (DSRS)
 
+[![DOI](https://zenodo.org/badge/1011134407.svg)](https://doi.org/10.5281/zenodo.17101635)
+
 The **Discrete Square Residual Structure (DSRS)** is an original mathematical framework that explores relationships between square residuals, discrete indexing, and special constants. This repository hosts C implementations of functions derived from DSRS, as well as examples, test cases, and documentation.
 
 ## Overview
