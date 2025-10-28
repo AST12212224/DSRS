@@ -7,6 +7,41 @@ This is the first preprint of the DSRS framework. Later versions may include str
 
 The **Discrete Square Residual Structure (DSRS)** is an original mathematical framework that explores relationships between square residuals, discrete indexing, and special constants. This repository hosts C implementations of functions derived from DSRS, as well as examples, test cases, and documentation.
 
+## Summary of C Source Files
+
+- **`main/up_low_csvMaker.c`**  
+  Generates a CSV listing `n²`, upper, lower, and common indices for arbitrary `μ` and range. Illustrates discrete layer mapping in DSRS.
+
+- **`main/Llow_by_Uup_any_mu.c`**  
+  Computes the cumulative product of `ΔL(n)` by `ΔU(n)` increments for any user-given `μ` and limit. Supports automatic or manual index selection to skip initial zeros. Used for empirical `π` and `1` approximations.
+
+- **`main/upUPandLowlow_display.c`**  
+  Creates an extended CSV visualization showing `n²`, upper/lower layers, their increments, and common indices for any `μ`. Aids in visual pattern analysis.
+
+- **`main/low_by_up_ratio.c`**  
+  Computes the product of ratios between lower and upper layer terms for a specified starting index, `μ`, and length. Useful for exploring layer relationships and custom starting positions.
+
+- **`main/automate_mu_runner.c`**  
+  Automates batch calculation of the DSRS product over a range of `μ`.  
+  For each `μ`, runs `Llow_by_Uup_any_mu.c`, captures the output, and logs results close to `π` in `mu_pi.csv` and others in `mu_1.csv`. Enables large-scale pattern discovery.
+
+- **`specific_mu/2s_downD_by_upU_my_wallis.c`**  
+  Implements a custom Wallis-like product for `μ = 2` using DSRS.  
+  Sequentially multiplies fractions constructed from floors of shifted indices; final product scaled by `2`. Approximates `π`.
+
+- **`specific_mu/2s_logV.c`**  
+  Computes the same Wallis-like product as above, but using the sum of logarithms for greater numeric stability at large `n`. Exponentiates the sum at the end to get the final product.
+
+- **`specific_mu/3s_low_by_up.c`**  
+  Computes a DSRS product for `μ = 3` by multiplying floor/ceiling-based fractions for all `n` up to a user-specified limit. Prints high-precision results and explores non-classical `π` relations.
+
+- **`specific_mu/4s_low_by_up.c`**  
+  Calculates the DSRS product for `μ = 4`, with custom numerator/denominator involving ceilings and floors. Used for empirical study of special `μ` cases that yield `1` instead of `π`.
+
+- **`specific_mu/5s_lowLow_by_upUp.c`**  
+  Computes a more complex DSRS product for `μ = 5`, involving nested ceiling functions. Handles negative indices as zeros. Explores new infinite product forms related to `π`.
+
+
 ## Overview
 
 DSRS examines how residuals of squares interact when structured under specific discrete rules. Notably, some results have deep connections to classical formulas such as the Wallis Product, as well as integer sequences (e.g., OEIS A052928, A063196). 
