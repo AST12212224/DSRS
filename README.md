@@ -7,6 +7,16 @@ This is the first preprint of the DSRS framework. Later versions may include str
 
 The **Discrete Square Residual Structure (DSRS)** is an original mathematical framework that explores relationships between square residuals, discrete indexing, and special constants. This repository hosts C implementations of functions derived from DSRS, as well as examples, test cases, and documentation.
 
+## Revised paper (v2): *A floor–ceiling Wallis-type product for π and a mod 4 dichotomy*
+
+The folder [`paper_v2/`](paper_v2/) contains the corrected and fully proved version of this work:
+
+- [`paper_v2/main.pdf`](paper_v2/main.pdf) and its LaTeX source (`main.tex`, `references.bib`).
+- **Main theorem (proved):** the product of ΔL(n)/ΔU(n) over n ≥ μ converges to **π/4** if μ ≥ 2 and 4 ∤ μ, and to **1** if μ = 1 or 4 ∣ μ. (Earlier versions stated π/2. The factor 2 comes from the terms with n < μ; e.g. for μ = 2 the product from n = 1 is Wallis's π/2.) The proof follows an answer by Marco on Mathematics Stack Exchange.
+- [`paper_v2/verify.py`](paper_v2/verify.py): exact-arithmetic checks of every lemma and table value (`python3 verify.py`, all checks PASS).
+- [`paper_v2/lean/`](paper_v2/lean/): Lean 4 + Mathlib formalization of the algebraic core (Lemmas A–B, the block product, and the multiset "structural reduction") for every μ ≥ 2.
+- [`paper_v2/CHANGES.md`](paper_v2/CHANGES.md): report of all corrections relative to the earlier preprint.
+
 ## Summary of C Source Files
 
 - **`main/up_low_csvMaker.c`**  

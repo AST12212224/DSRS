@@ -1,0 +1,348 @@
+\documentclass{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\renewcommand{\thelemma}{\Alph{lemma}}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem*{theorem*}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{observation}{Observation}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\DL}{\Delta_L}
+\newcommand{\DU}{\Delta_U}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+
+\begin{document}
+
+\title[A floor--ceiling Wallis-type product]{A floor--ceiling Wallis-type product for $\pi$ and a mod 4 dichotomy}
+
+\author{Aadesh Tikhe}
+\address{Sardar Patel Institute of Technology (SPIT), Mumbai, India}
+\email{aadeshtikhe24@gmail.com}
+\urladdr{https://orcid.org/0009-0009-3185-0845}
+
+\subjclass[2020]{Primary 11Y60; Secondary 11B83, 40A20}
+\keywords{Wallis product; floor function; ceiling function; infinite products; integer sequences; approximation of $\pi$}
+
+\begin{abstract}
+For a positive integer $\mu$ let $L(n)=\lfloor n^2/\mu\rfloor$ and $U(n)=\lceil n^2/\mu\rceil$, and let $\DL(n)$ and $\DU(n)$ be their forward differences. We prove that the infinite product of the ratios $\DL(n)/\DU(n)$ over $n\ge\mu$ converges to $\pi/4$ when $\mu\ge 2$ and $4\nmid\mu$, and to $1$ when $\mu=1$ or $4\mid\mu$. For $\mu=2$ the factors, taken from $n=1$, are exactly those of the Wallis product. The proof follows an idea of Marco: writing $n=\mu\gamma+\delta$, each block of $\mu$ consecutive factors equals $4\gamma(\gamma+1)/(2\gamma+1)^2$ or $1$ according to whether $4\nmid\mu$ or $4\mid\mu$, and the limit reduces to the Wallis product. We also describe how the limit depends on the starting index. All identities were checked in exact arithmetic for $\mu\le 300$, and partial products up to $N=10^7$ show an error of order $1/N$.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Fix a positive integer $\mu$. The two integer sequences $\lfloor n^2/\mu\rfloor$ and $\lceil n^2/\mu\rceil$ agree when $\mu\mid n^2$ and differ by one otherwise. Their forward differences $\DL(n)$ and $\DU(n)$ (Definition~\ref{def:basic}) are therefore close to each other, and it is natural to ask whether the product of the ratios $\DL(n)/\DU(n)$ converges, and to what.
+
+For $\mu=2$ one finds $\DL(n)=2\lceil n/2\rceil$ and $\DU(n)=2\lfloor n/2\rfloor+1$; these are the sequences A052928 and A063196 of the OEIS (with a shift of index, see Remark~\ref{rem:small}). The ratios for $n=1,2,3,\dots$ are $\tfrac21,\tfrac23,\tfrac43,\tfrac45,\dots$, the factors of Wallis's product $\pi/2=\prod_{k\ge1}\frac{(2k)^2}{(2k-1)(2k+1)}$~\cite{wallis_wolfram}. Computations for other values of $\mu$ suggested that the product always converges, and that its limit depends only on whether $4$ divides $\mu$. The main result confirms this.
+
+\begin{theorem*}[informal version of Theorem~\ref{thm:main}]
+The product of the ratios $\DL(n)/\DU(n)$ over all $n\ge\mu$ converges to $\pi/4$ if $\mu\ge2$ and $4\nmid\mu$, and to $1$ if $\mu=1$ or $4\mid\mu$.
+\end{theorem*}
+
+The starting index matters: changing it multiplies the limit by a nonzero rational constant, and some smaller starting indices give zero or undefined factors. This is explained in Remark~\ref{rem:start}.
+
+\subsection*{Contributions}
+The product, the observation of the mod~$4$ dichotomy and the numerical experiments are due to the author, who asked on Mathematics Stack Exchange why the product converges. The proof in Section~\ref{sec:proof} follows the answer of Marco~\cite{marco2025}. His key idea is to write $n=\mu\gamma+\delta$ with $0\le\delta<\mu$, which reduces each factor to an expression in $\gamma$ and the remainder $\delta$. His answer also contains the case analysis of Lemma~\ref{lem:local}, the counting argument of Proposition~\ref{prop:block} and the reduction to the Wallis product. Here every step is proved in full. We also treat incomplete blocks, the dependence on the starting index and the multiset form of the cancellation (Proposition~\ref{prop:multiset}), and we report computations (Section~\ref{sec:computations}).
+
+\section{Definitions and main result}
+
+\begin{definition}\label{def:basic}
+For a fixed integer $\mu\ge1$ and every integer $n\ge0$ put
+\begin{gather*}
+L(n)=\floor{\frac{n^2}{\mu}},\qquad U(n)=\ceil{\frac{n^2}{\mu}},\\
+\DL(n)=L(n+1)-L(n),\qquad \DU(n)=U(n+1)-U(n).
+\end{gather*}
+For $N\ge\mu$ define the partial products and the infinite product
+\[
+P_N(\mu)=\prod_{n=\mu}^{N}\frac{\DL(n)}{\DU(n)},\qquad P(\mu)=\lim_{N\to\infty}P_N(\mu).
+\]
+\end{definition}
+
+Both $L$ and $U$ are nondecreasing on $n\ge0$, so $\DL(n),\DU(n)\ge0$. We shall see that $\DL(n),\DU(n)\ge2$ for $n\ge\mu$, so every factor of $P_N(\mu)$ is a positive rational number.
+
+\begin{theorem}\label{thm:main}
+For every integer $\mu\ge1$ the limit $P(\mu)$ exists, and
+\[
+P(\mu)=\begin{cases}
+\pi/4, & \text{if } \mu\ge2 \text{ and } 4\nmid\mu,\\
+1, & \text{if } \mu=1 \text{ or } 4\mid\mu.
+\end{cases}
+\]
+Equivalently, $4P_N(\mu)\to\pi$ as $N\to\infty$ whenever $\mu\ge2$ and $4\nmid\mu$.
+\end{theorem}
+
+\begin{remark}[The starting index]\label{rem:start}
+If the product is started at some $n_0<\mu$ instead of $\mu$, the limit is multiplied by the finite product $c(\mu,n_0)=\prod_{n=n_0}^{\mu-1}\DL(n)/\DU(n)$, provided all these factors are defined and nonzero. Small starting indices are excluded because:
+\begin{enumerate}
+\item for $\mu\ge2$, $\DL(0)=L(1)-L(0)=0$, so the factor at $n=0$ vanishes;
+\item for $\mu\ge4$, $\DU(1)=\lceil 4/\mu\rceil-\lceil1/\mu\rceil=0$, so the factor at $n=1$ is undefined.
+\end{enumerate}
+For $\mu\in\{2,3\}$ all factors with $n\ge1$ are positive and $c(\mu,1)=2$ (the factors at $n=1,2$ are $2/1$ for $\mu=2$, and $1/1$, $2/1$ for $\mu=3$). So the product from $n=1$ converges to $\pi/2$; for $\mu=2$ this is exactly Wallis's product. If $4\mid\mu$, all factors with $\mu/2\le n<\mu$ are positive, and
+\[
+c(\mu,\mu/2)=1,\qquad c\bigl(\mu,\tfrac{\mu+2}{2}\bigr)=2 .
+\]
+So the product converges to $1$ from $n_0=\mu/2$ and to $2$ from $n_0=(\mu+2)/2$. These two values are proved at the end of Section~\ref{sec:proof}. For each $1\le\mu\le300$, a computer check (Section~\ref{sec:computations}) confirms that $\mu\in\{1,2,3\}$ are the only values for which all factors with $1\le n<\mu$ are defined and nonzero. Starting at $n_0=\mu$ avoids all of these special cases, and we use it throughout.
+\end{remark}
+
+\begin{remark}[Explicit forms for $\mu=2,3$]\label{rem:small}
+For $\mu=2$ and $n\ge0$ one has $\DL(n)=2\lceil n/2\rceil$ and $\DU(n)=2\lfloor n/2\rfloor+1$. This follows directly from $L(2k)=U(2k)=2k^2$, $L(2k+1)=2k^2+2k$ and $U(2k+1)=2k^2+2k+1$. In OEIS notation, $\DL(n)=\mathrm{A052928}(n+1)$ for $n\ge0$ and $\DU(n)=\mathrm{A063196}(n+1)$ for $n\ge1$~\cite{oeisA052928,oeisA063196}. For $\mu=3$, Lemmas~\ref{lem:shift} and~\ref{lem:local} below give $\DL(n)=\lfloor 2(n+1)/3\rfloor$ and $\DU(n)=2\lfloor n/3\rfloor+1$ for $n\ge0$. Together with Remark~\ref{rem:start} this yields
+\[
+\pi=2\prod_{n=1}^{\infty}\frac{2\lfloor (n+1)/2\rfloor}{2\lfloor n/2\rfloor+1}
+=2\prod_{n=1}^{\infty}\frac{\lfloor 2(n+1)/3\rfloor}{2\lfloor n/3\rfloor+1}.
+\]
+The first product is Wallis's product written with the floor function. In each case the factor $2$ comes from the factors with $n<\mu$, not from the limit $P(\mu)=\pi/4$.
+\end{remark}
+
+\section{Proof of Theorem~\ref{thm:main}}\label{sec:proof}
+
+The argument follows Marco's answer~\cite{marco2025}; we give complete proofs of each step. Throughout, $\mu\ge1$ is fixed and every integer $n\ge0$ is written as
+\[
+n=\mu\gamma+\delta,\qquad \gamma=\lfloor n/\mu\rfloor,\quad 0\le\delta\le\mu-1 .
+\]
+Note that $n\ge\mu$ if and only if $\gamma\ge1$.
+
+\begin{lemma}\label{lem:shift}
+For all integers $\gamma\ge0$ and $\delta\ge0$, with $n=\mu\gamma+\delta$,
+\[
+\DL(n)=2\gamma+\DL(\delta),\qquad \DU(n)=2\gamma+\DU(\delta).
+\]
+Consequently, for $\gamma\ge1$,
+\[
+\frac{\DL(n)}{\DU(n)}=\frac{2\gamma+\DL(\delta)}{2\gamma+\DU(\delta)},
+\]
+and $\DL(n),\DU(n)\ge2\gamma\ge2$.
+\end{lemma}
+
+\begin{proof}
+We have $n^2/\mu=(\mu\gamma^2+2\gamma\delta)+\delta^2/\mu$, where $k=\mu\gamma^2+2\gamma\delta$ is an integer. Since $\lfloor k+x\rfloor=k+\lfloor x\rfloor$ and $\lceil k+x\rceil=k+\lceil x\rceil$ for $k\in\mathbb Z$ and real $x$,
+\[
+L(\mu\gamma+\delta)=\mu\gamma^2+2\gamma\delta+L(\delta),\qquad U(\mu\gamma+\delta)=\mu\gamma^2+2\gamma\delta+U(\delta).
+\]
+This holds for every integer $\delta\ge0$, in particular for $\delta+1$, since $n+1=\mu\gamma+(\delta+1)$. Subtracting the identity for $\delta$ from the identity for $\delta+1$ gives $L(n+1)-L(n)=2\gamma+L(\delta+1)-L(\delta)$, and the same for $U$. The last claim follows from $\DL(\delta),\DU(\delta)\ge0$.
+\end{proof}
+
+So for $n\ge\mu$ every factor is positive, and it depends only on $\gamma$ and on the two local values $\DL(\delta),\DU(\delta)$ with $0\le\delta<\mu$. These are described next. For $\gamma\ge1$ write
+\[
+x_\gamma=\frac{2\gamma}{2\gamma+1},\qquad y_\gamma=\frac{2\gamma+1}{2\gamma+2},\qquad\text{so that}\qquad
+\frac{x_\gamma}{y_\gamma}=\frac{4\gamma(\gamma+1)}{(2\gamma+1)^2}.
+\]
+
+\begin{lemma}\label{lem:local}
+Let $\mu\ge2$, $0\le\delta\le\mu-1$ and $f=\lfloor(2\delta+1)/\mu\rfloor$. Then $f\in\{0,1\}$, with $f=0$ if and only if $2\delta+1<\mu$. Moreover:
+\begin{enumerate}
+\item $\mu\mid\delta^2$ and $\mu\mid(\delta+1)^2$ never hold simultaneously;
+\item if $\mu\nmid\delta^2$ and $\mu\nmid(\delta+1)^2$, then $\DL(\delta)=\DU(\delta)$;
+\item if $\mu\mid\delta^2$, then $\DL(\delta)=f$ and $\DU(\delta)=f+1$;
+\item if $\mu\mid(\delta+1)^2$, then $\DU(\delta)=f$ and $\DL(\delta)=f+1$;
+\item in cases (3) and (4), $2\delta+1\ne\mu$.
+\end{enumerate}
+Hence, for $\gamma\ge1$ and $n=\mu\gamma+\delta$, the factor $\DL(n)/\DU(n)$ equals $1$ in case (2); equals $x_\gamma$ or $y_\gamma$ in case (3), according as $2\delta+1<\mu$ or $2\delta+1>\mu$; and equals $1/x_\gamma$ or $1/y_\gamma$ in case (4), under the same condition.
+\end{lemma}
+
+\begin{proof}
+Since $1\le2\delta+1\le2\mu-1$, we have $f\in\{0,1\}$, and $f=0$ exactly when $2\delta+1<\mu$.
+
+(1) If both held, any prime $p\mid\mu$ would divide both $\delta$ and $\delta+1$. Such a prime exists because $\mu\ge2$, so this is impossible.
+
+Let $\varepsilon(m)=U(m)-L(m)$. Then $\varepsilon(m)=0$ if $\mu\mid m^2$ and $\varepsilon(m)=1$ otherwise, and
+\begin{equation}\label{eq:eps}
+\DU(\delta)-\DL(\delta)=\varepsilon(\delta+1)-\varepsilon(\delta).
+\end{equation}
+
+(2) Here $\varepsilon(\delta)=\varepsilon(\delta+1)=1$, so \eqref{eq:eps} gives $\DL(\delta)=\DU(\delta)$.
+
+(3) Since $\delta^2/\mu$ is an integer, $\DL(\delta)=\lfloor(\delta+1)^2/\mu\rfloor-\delta^2/\mu=\lfloor(2\delta+1)/\mu\rfloor=f$. By (1), $\varepsilon(\delta)=0$ and $\varepsilon(\delta+1)=1$, so $\DU(\delta)=f+1$ by \eqref{eq:eps}.
+
+(4) Since $(\delta+1)^2/\mu$ is an integer,
+\[
+\DU(\delta)=\frac{(\delta+1)^2}{\mu}-\ceil{\frac{\delta^2}{\mu}}
+=-\ceil{\frac{\delta^2-(\delta+1)^2}{\mu}}=-\ceil{-\frac{2\delta+1}{\mu}}=f.
+\]
+Here $\varepsilon(\delta)=1$ and $\varepsilon(\delta+1)=0$, so $\DL(\delta)=f+1$.
+
+(5) Let $p$ be a prime dividing $\mu$. In case (3), $p\mid\delta^2$, so $p\mid\delta$. If $2\delta+1=\mu$, then $p\mid 2\delta+1$, and so $p\mid1$, which is absurd. In case (4), $p\mid\delta+1$, and $2\delta+1=2(\delta+1)-1$ gives the same contradiction.
+
+For the last statement, insert the local values into Lemma~\ref{lem:shift}. In case (3) the factor is $(2\gamma+f)/(2\gamma+f+1)$, which is $x_\gamma$ if $f=0$ and $y_\gamma$ if $f=1$; by (5), $f=1$ means $2\delta+1>\mu$. Case (4) gives the reciprocals.
+\end{proof}
+
+\begin{remark}
+Marco's answer~\cite{marco2025} also lists a case $\delta=(\mu-1)/2$ with factor $1$. By part (5) this case cannot occur together with (3) or (4) when $\mu\ge2$, so it does not appear here.
+\end{remark}
+
+Write $\mu=\prod_p p^{e_p}$ and let
+\[
+M=\prod_{p\mid\mu}p^{\lceil e_p/2\rceil},\qquad T=\mu/M .
+\]
+Then $M$ is the least positive integer whose square is divisible by $\mu$, and $M\ge2$ when $\mu\ge2$.
+
+\begin{proposition}\label{prop:block}
+Let $\mu\ge2$ and $\gamma\ge1$, and define the block product
+\[
+B_\gamma(\mu)=\prod_{n=\mu\gamma}^{\mu\gamma+\mu-1}\frac{\DL(n)}{\DU(n)}=\prod_{\delta=0}^{\mu-1}\frac{2\gamma+\DL(\delta)}{2\gamma+\DU(\delta)} .
+\]
+Then
+\[
+B_\gamma(\mu)=\begin{cases}1,&\text{if }4\mid\mu,\\[2pt] \dfrac{4\gamma(\gamma+1)}{(2\gamma+1)^2},&\text{if }4\nmid\mu.\end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Step 1: which $\delta$ contribute.} For $0\le\delta\le\mu-1$ we have $\mu\mid\delta^2$ if and only if $M\mid\delta$. Indeed, $\mu\mid\delta^2$ means $e_p\le 2v_p(\delta)$ for every prime $p\mid\mu$, that is, $v_p(\delta)\ge\lceil e_p/2\rceil$. (For $\delta=0$ both conditions hold.) Applying this to $\delta+1$ gives $\mu\mid(\delta+1)^2$ if and only if $\delta\equiv-1\pmod M$. So the residues of case (3) of Lemma~\ref{lem:local} are $\delta=jM$ with $0\le j\le T-1$, and those of case (4) are $\delta=jM-1$ with $1\le j\le T$. There are $T$ of each. All other residues give the factor $1$.
+
+\emph{Step 2: counting.} Let $a$ be the number of $j\in\{0,\dots,T-1\}$ with $2jM+1<\mu$, and $b$ the number of $j\in\{1,\dots,T\}$ with $2(jM-1)+1<\mu$. Dividing by $M$ and using $\mu=TM$,
+\[
+2jM+1<\mu\iff 2j<T-\tfrac1M,\qquad 2jM-1<\mu\iff 2j<T+\tfrac1M .
+\]
+Since $2j$ and $T$ are integers and $0<1/M<1$, the first condition is equivalent to $2j\le T-1$ and the second to $2j\le T$. Hence
+\[
+a=\#\{\,j\ge0:2j\le T-1\,\}=\ceil{T/2},\qquad b=\#\{\,j\ge1:2j\le T\,\}=\floor{T/2}
+\]
+(the upper bounds $j\le T-1$ and $j\le T$ are automatic). Thus $a-b=1$ if $T$ is odd and $a-b=0$ if $T$ is even.
+
+\emph{Step 3: the product.} By Lemma~\ref{lem:local}, the residues of case (3) contribute $x_\gamma^{\,a}\,y_\gamma^{\,T-a}$, and those of case (4) contribute $x_\gamma^{-b}\,y_\gamma^{-(T-b)}$. Therefore
+\[
+B_\gamma(\mu)=x_\gamma^{\,a-b}\,y_\gamma^{\,b-a}=\Bigl(\frac{x_\gamma}{y_\gamma}\Bigr)^{a-b}=\Bigl(\frac{4\gamma(\gamma+1)}{(2\gamma+1)^2}\Bigr)^{a-b}.
+\]
+
+\emph{Step 4: parity of $T$.} Let $e=e_2$ be the exponent of $2$ in $\mu$. Then $v_2(T)=e-\lceil e/2\rceil=\lfloor e/2\rfloor$, which is positive if and only if $e\ge2$. So $T$ is even exactly when $4\mid\mu$, and Step~3 gives the result.
+\end{proof}
+
+\begin{lemma}\label{lem:wallis}
+Let $R_G=\prod_{\gamma=1}^{G}\frac{4\gamma(\gamma+1)}{(2\gamma+1)^2}$ and $W_G=\prod_{k=1}^{G}\frac{(2k)^2}{(2k-1)(2k+1)}$. Then $R_G=\frac{G+1}{2G+1}\,W_G$ for every $G\ge1$, and consequently $R_G\to\pi/4$.
+\end{lemma}
+
+\begin{proof}
+Write $D_G=\prod_{k=1}^{G}(2k+1)$. Then $\prod_{k=1}^{G}(2k-1)=D_G/(2G+1)$, so
+\[
+W_G=\frac{4^G(G!)^2\,(2G+1)}{D_G^2},\qquad
+R_G=\frac{\prod_{\gamma=1}^G 2\gamma\,(2\gamma+2)}{D_G^2}=\frac{4^G\,G!\,(G+1)!}{D_G^2}.
+\]
+Dividing, $R_G/W_G=(G+1)/(2G+1)$. By Wallis's product $W_G\to\pi/2$~\cite{wallis_wolfram}, and $(G+1)/(2G+1)\to1/2$, so $R_G\to\pi/4$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+If $\mu=1$, then $L(n)=U(n)=n^2$ and every factor equals $1$, so $P_N(1)=1$. Let $\mu\ge2$ and $N\ge\mu$, and write $N=\mu G+r$ with $G\ge1$ and $0\le r\le\mu-1$. Grouping the factors of $P_N(\mu)$ into complete blocks gives
+\[
+P_N(\mu)=\Bigl(\prod_{\gamma=1}^{G-1}B_\gamma(\mu)\Bigr)\,Q_{G,r},\qquad Q_{G,r}=\prod_{\delta=0}^{r}\frac{\DL(\mu G+\delta)}{\DU(\mu G+\delta)} .
+\]
+By Proposition~\ref{prop:block}, the first factor equals $1$ if $4\mid\mu$ and $R_{G-1}$ if $4\nmid\mu$ (with $R_0=1$). By Lemma~\ref{lem:wallis}, it therefore tends to $1$, respectively to $\pi/4$, as $G\to\infty$.
+
+It remains to show that $Q_{G,r}\to1$ uniformly in $r$. By Lemma~\ref{lem:local} and Step~1 of the proof of Proposition~\ref{prop:block}, at most $2T\le2\mu$ of the factors in $Q_{G,r}$ differ from $1$. Each of them is one of $x_G,y_G,1/x_G,1/y_G$. Since $x_G<y_G<1$, each such factor lies in $[x_G,1/x_G]$. Hence
+\[
+\Bigl(1-\frac1{2G+1}\Bigr)^{2\mu}=x_G^{2\mu}\le Q_{G,r}\le x_G^{-2\mu}=\Bigl(1-\frac1{2G+1}\Bigr)^{-2\mu},
+\]
+and both bounds tend to $1$ as $G\to\infty$, for fixed $\mu$. Since $G\to\infty$ as $N\to\infty$, the limit of $P_N(\mu)$ along all $N$ exists and has the stated value.
+\end{proof}
+
+\begin{remark}\label{rem:exact}
+The proof gives exact values at the ends of blocks: $P_{\mu G-1}(\mu)=1$ for every $G\ge1$ when $4\mid\mu$, and $P_{\mu G-1}(\mu)=R_{G-1}$ when $\mu\ge2$ and $4\nmid\mu$. In the second case the value does not depend on $\mu$.
+\end{remark}
+
+\begin{proof}[Proof of the values in Remark~\ref{rem:start}]
+Let $4\mid\mu$ and $\mu/2\le\delta\le\mu-1$, so that $\gamma=0$ and $f=1$. In case (2) of Lemma~\ref{lem:local}, $\DL(\delta)=\DU(\delta)\ge\lfloor(2\delta+1)/\mu\rfloor=1$, using $\lfloor u\rfloor-\lfloor v\rfloor\ge\lfloor u-v\rfloor$. So the factor is $1$. In case (3) the factor is $1/2$, and in case (4) it is $2/1$. The residues of case (3) in this range are $\delta=jM$ with $T/2\le j\le T-1$, which gives $T/2$ values. The residues of case (4) are $\delta=jM-1$ with $jM-1\ge\mu/2$, that is, $T/2+1\le j\le T$ (because $0<1/M<1$), which also gives $T/2$ values. Hence $c(\mu,\mu/2)=2^{T/2}2^{-T/2}=1$. The range starting at $(\mu+2)/2$ omits only $\delta=\mu/2=(T/2)M$, whose factor is $1/2$, so $c(\mu,(\mu+2)/2)=2$.
+\end{proof}
+
+\subsection*{The cancellation in multiset form}
+The dichotomy was first found by comparing the values of $\DU$ and $\DL$ as multisets and cancelling common values. Lemma~\ref{lem:local} makes this comparison exact. For a finite set $I$ of indices let $\mathcal U_I$ and $\mathcal L_I$ be the multisets of the values $\DU(n)$ and $\DL(n)$, $n\in I$. Let $\mathcal U_I'$ and $\mathcal L_I'$ be what remains after removing their common part, counted with multiplicity.
+
+\begin{proposition}\label{prop:multiset}
+Let $\mu\ge2$, $G\ge1$ and $I=\{\mu,\mu+1,\dots,\mu(G+1)-1\}$. If $4\mid\mu$, then $\mathcal U_I=\mathcal L_I$, so $\mathcal U_I'=\mathcal L_I'=\varnothing$. If $4\nmid\mu$, then, independently of $\mu$,
+\begin{align*}
+\mathcal U_I'&=\{3,3,5,5,\dots,2G+1,2G+1\},\\
+\mathcal L_I'&=\{2,4,4,6,6,\dots,2G,2G,2G+2\}.
+\end{align*}
+These are exactly the multisets obtained for $\mu=2$.
+\end{proposition}
+
+\begin{proof}
+For an integer $v$ let $m(v)$ be the number of $n\in I$ with $\DU(n)=v$ minus the number with $\DL(n)=v$. Then $\mathcal U_I'$ contains $v$ with multiplicity $\max(m(v),0)$, and $\mathcal L_I'$ with multiplicity $\max(-m(v),0)$. Indices in case (2) of Lemma~\ref{lem:local} contribute nothing to $m$. In block $\gamma$, by Lemmas~\ref{lem:shift} and~\ref{lem:local} and the counts $a,b$ of Proposition~\ref{prop:block}, case (3) gives the pairs $(\DU,\DL)=(2\gamma+1,2\gamma)$ $a$ times and $(2\gamma+2,2\gamma+1)$ $T-a$ times. Case (4) gives $(2\gamma,2\gamma+1)$ $b$ times and $(2\gamma+1,2\gamma+2)$ $T-b$ times. The contribution of block $\gamma$ to $m$ is therefore $2(a-b)$ at $v=2\gamma+1$, $-(a-b)$ at $v=2\gamma$ and $-(a-b)$ at $v=2\gamma+2$. Summing over $\gamma=1,\dots,G$ gives $m(2\gamma+1)=2(a-b)$ for $1\le\gamma\le G$, $m(2)=m(2G+2)=-(a-b)$, $m(2\gamma)=-2(a-b)$ for $2\le\gamma\le G$, and $m(v)=0$ otherwise. Since $a-b=0$ when $4\mid\mu$ and $a-b=1$ otherwise, the claim follows.
+\end{proof}
+
+Since the product of $\DL(n)/\DU(n)$ over $I$ equals $\prod\mathcal L_I'/\prod\mathcal U_I'$, Proposition~\ref{prop:multiset} gives Remark~\ref{rem:exact} again: the quotient is $2\cdot4^2\cdots(2G)^2(2G+2)/(3^2\cdot5^2\cdots(2G+1)^2)=R_G$.
+
+\section{Computational results}\label{sec:computations}
+
+A Python script, \texttt{verify.py}, checks every identity in Sections~2--3 in exact rational arithmetic (integers and \texttt{fractions.Fraction}) for $1\le\mu\le300$ and $0\le\gamma\le10$: Lemmas~\ref{lem:shift} and~\ref{lem:local}, Propositions~\ref{prop:block} and~\ref{prop:multiset}, the identity of Lemma~\ref{lem:wallis} for $G\le500$, the bounds for incomplete blocks, and the statements of Remarks~\ref{rem:start}--\ref{rem:exact}. The partial products in Tables~\ref{tab:small} and~\ref{tab:large} are computed directly from Definition~\ref{def:basic}, with $60$-digit decimal arithmetic. The accumulated rounding error is below $10^{-50}$, so all printed digits are correct. In addition, Lemmas~\ref{lem:shift} and~\ref{lem:local} and Propositions~\ref{prop:block} and~\ref{prop:multiset} have been formalized for all $\mu\ge2$ in Lean~4 with Mathlib (the passage to the limit, Lemma~\ref{lem:wallis} and the bound for incomplete blocks, is not formalized); the source is in the repository.
+
+\begin{table}[ht]
+\centering
+\caption{Partial products $4P_N(\mu)$ and the scaled error $N\,(4P_N(\mu)-\pi)$.}
+\label{tab:small}
+\begin{tabular}{r cccc}
+\toprule
+ & \multicolumn{4}{c}{$4P_N(\mu)$}\\
+\cmidrule(lr){2-5}
+$N$ & $\mu=2$ & $\mu=3$ & $\mu=5$ & $\mu=6$\\
+\midrule
+$10^2$ & 3.1260789 & 3.1182361 & 3.1035170 & 3.0943587\\
+$10^3$ & 3.1400238 & 3.1392385 & 3.1376779 & 3.1368791\\
+$10^4$ & 3.1414356 & 3.1413571 & 3.1412001 & 3.1411214\\
+$10^5$ & 3.1415769 & 3.1415691 & 3.1415534 & 3.1415455\\
+$10^6$ & 3.1415911 & 3.1415903 & 3.1415887 & 3.1415879\\
+\midrule
+ & \multicolumn{4}{c}{$N\,(4P_N(\mu)-\pi)$}\\
+\cmidrule(lr){2-5}
+$10^2$ & $-1.551$ & $-2.336$ & $-3.808$ & $-4.723$\\
+$10^3$ & $-1.569$ & $-2.354$ & $-3.915$ & $-4.714$\\
+$10^4$ & $-1.571$ & $-2.356$ & $-3.926$ & $-4.713$\\
+$10^5$ & $-1.571$ & $-2.356$ & $-3.927$ & $-4.712$\\
+$10^6$ & $-1.571$ & $-2.356$ & $-3.927$ & $-4.712$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In Table~\ref{tab:small} the scaled error $N(4P_N(\mu)-\pi)$ is essentially constant in $N$, so the error is of order $1/N$. The constants agree with $-\pi\mu/4$ ($\approx-1.571$, $-2.356$, $-3.927$, $-4.712$). The following observation describes how the constant depends on $N$. It is supported by computation but not proved here.
+
+\begin{observation}\label{obs:rate}
+For $2\le\mu\le30$ and every $N=10^4\mu+r$ with $0\le r<\mu$, the following hold to within $0.005\,\mu$. If $4\nmid\mu$, then $N(4P_N(\mu)-\pi)$ is approximately $-\pi\mu/4$ when $N\not\equiv-1\pmod M$, and approximately $+\pi\mu/4$ when $N\equiv-1\pmod M$. If $4\mid\mu$, then $N(P_N(\mu)-1)$ is approximately $-\mu/2$ when $N\not\equiv-1\pmod M$, and approximately $0$ when $N\equiv-1\pmod M$. (By Remark~\ref{rem:exact}, $P_N(\mu)=1$ exactly when $4\mid\mu$ and $N\equiv-1\pmod\mu$.)
+\end{observation}
+
+Table~\ref{tab:large} shows the same behaviour for large $\mu$ in both residue classes. The last column, $N(P_N(\mu)/P(\mu)-1)/\mu$, is close to $-1/4$ when $4\nmid\mu$ and to $-1/2$ when $4\mid\mu$, as Observation~\ref{obs:rate} predicts (none of these $N$ is $\equiv-1\pmod M$).
+
+\begin{table}[ht]
+\centering
+\caption{Partial products for large $\mu$ at $N=10^7$.}
+\label{tab:large}
+\begin{tabular}{rccrr}
+\toprule
+$\mu$ & $\mu \bmod 4$ & $P(\mu)$ & $P_N(\mu)$ & $N\bigl(P_N(\mu)/P(\mu)-1\bigr)/\mu$\\
+\midrule
+999   & 3 & $\pi/4$ & 0.7853785 & $-0.2500$\\
+1000  & 0 & $1$     & 0.9999500 & $-0.5000$\\
+1009  & 1 & $\pi/4$ & 0.7853784 & $-0.2500$\\
+1147  & 3 & $\pi/4$ & 0.7853756 & $-0.2500$\\
+8888  & 0 & $1$     & 0.9995558 & $-0.4998$\\
+9999  & 3 & $\pi/4$ & 0.7852019 & $-0.2499$\\
+10000 & 0 & $1$     & 0.9995002 & $-0.4998$\\
+65537 & 1 & $\pi/4$ & 0.7841117 & $-0.2499$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Declarations}
+
+\textbf{Data availability.} The source code (including \texttt{verify.py} and the Lean~4 formalization) and the computed data are available in the repository
+\begin{center}\url{https://github.com/AST12212224/DSRS}.\end{center}\footnote{The repository uses the name ``DSRS'' for this project.} An earlier version of this work is archived as a preprint~\cite{tikhe2025zenodo}.
+
+\textbf{Competing interests.} The author declares no competing interests.
+
+\textbf{Funding.} This research received no external funding.
+
+\textbf{Use of AI tools.} During the preparation of this work the author used Claude (Anthropic) to assist with LaTeX formatting, restructuring and editing of the manuscript, and writing verification scripts. The author reviewed and edited all content and takes full responsibility for the published article.
+
+\section*{Acknowledgments}
+The author thanks his father for educational support, Mukharji Uncle for mathematical mentorship, and Marco for the Mathematics Stack Exchange answer~\cite{marco2025} on which the proof in Section~\ref{sec:proof} is based.
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
