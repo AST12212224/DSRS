@@ -69,7 +69,7 @@ It was checked exactly for μ ≤ 300, G ≤ 10. The original examples, which st
 
 1. **AI declaration.** Resolved: no GPT-4 declaration needed; the statement names only Claude, as you specified.
 2. **Marco's answer.** The paper credits Marco for the decomposition, the case analysis, the M/a/b counting and the reduction to Wallis. That matches his answer (math.stackexchange.com/a/5095888, 13 Sep 2025), which I read through the Stack Exchange API. Please confirm you're happy with that wording (Introduction, "Contributions").
-3. **Upload `verify.py` to the GitHub repo.** The paper says it is there.
+3. **GitHub:** done. `paper_v2/` (paper, `verify.py`, this report, `lean/`) was pushed to `main` of AST12212224/DSRS (commit f613f73).
 4. **Zenodo**: the cited preprint (10.5281/zenodo.17519713) still states π/2 and the (μ+2)/2 start. Consider uploading this version as a new Zenodo version. Its title contains "DSRS" in the reference list. Do you want to keep that citation (journals usually want preprints disclosed) or mention it only in the cover letter?
 5. **Acknowledgments**: kept verbatim. Journals usually expect a full name for "Mukharji Uncle". Do you want to change it?
 6. **Title**: kept as you proposed; I don't suggest a different one.
