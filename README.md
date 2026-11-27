@@ -1,11 +1,26 @@
-# Discrete Square Residual Structure (DSRS)
+# A floor–ceiling Wallis-type product for π and a mod 4 dichotomy
 
-[![DOI](https://zenodo.org/badge/1011134407.svg)](https://doi.org/10.5281/zenodo.17101635)
+*(formerly **Discrete Square Residual Structure, DSRS**)*
 
-This is the first preprint of the DSRS framework. Later versions may include stronger proofs, extended results, and additional numerical experiments.
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17144469.svg)](https://doi.org/10.5281/zenodo.17144469)
+[![Paper DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24590696.svg)](https://doi.org/10.5281/zenodo.24590696)
+[![All versions](https://img.shields.io/badge/all%20versions-10.5281%2Fzenodo.17101749-blue)](https://doi.org/10.5281/zenodo.17101749)
+[![Code DOI](https://zenodo.org/badge/1011134407.svg)](https://doi.org/10.5281/zenodo.17101635)
 
-The **Discrete Square Residual Structure (DSRS)** is an original mathematical framework that explores relationships between square residuals, discrete indexing, and special constants. This repository hosts C implementations of functions derived from DSRS, as well as examples, test cases, and documentation.
+**Latest paper (v2):** Aadesh Tikhe, *A floor–ceiling Wallis-type product for π and a mod 4 dichotomy*, Zenodo preprint, 2026. DOI: [10.5281/zenodo.24590696](https://doi.org/10.5281/zenodo.24590696). Licensed CC BY 4.0.
+
+For a positive integer μ, let L(n) = ⌊n²/μ⌋ and U(n) = ⌈n²/μ⌉, with forward differences ΔL(n) = L(n+1) − L(n) and ΔU(n) = U(n+1) − U(n). Then
+
+$$
+\prod_{n=\mu}^{\infty} \frac{\Delta L(n)}{\Delta U(n)} =
+\begin{cases}
+\pi/4 & \text{if } \mu \ge 2 \text{ and } 4 \nmid \mu,\\
+1 & \text{if } \mu = 1 \text{ or } 4 \mid \mu.
+\end{cases}
+$$
+
+This repository holds the v2 paper, its exact-arithmetic verification script and Lean 4 formalization (in [`paper_v2/`](paper_v2/)), and the original C programs used for the experiments that led to it.
+
+> **Note on the older material:** the earlier preprint (*Discrete Square Residual Structures*) and the C programs below predate v2. They state the limit as π/2 and some of them multiply the final product by 2. See [`paper_v2/CHANGES.md`](paper_v2/CHANGES.md) for what was corrected.
 
 ## Revised paper (v2): *A floor–ceiling Wallis-type product for π and a mod 4 dichotomy*
 
